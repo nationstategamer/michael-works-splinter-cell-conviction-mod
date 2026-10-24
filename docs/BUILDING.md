@@ -60,7 +60,12 @@ it does not run the graphics harness or claim in-game acceptance.
 
 Players on Windows 10/11 x64 can use the public Setup EXE without installing Python. Building that EXE
 requires 64-bit Windows Python, including Tcl/Tk, and the exact hash-pinned build
-dependencies. Use a private environment outside the checkout:
+dependencies. The reviewed release and CI use **CPython 3.15.0 x64**; use that
+exact runtime to rebuild the public installer. Its Windows x64 package is present
+in the official [actions/python-versions manifest](https://github.com/actions/python-versions/blob/main/versions-manifest.json).
+Other Python runtime builds have not passed this release's embedded privacy
+audit, even when their application-level tests pass. Use a private environment
+outside the checkout:
 
 ```powershell
 python -m venv ../mw-mod-installer-env
