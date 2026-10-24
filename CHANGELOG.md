@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.8.5 - standalone launch correction
+
+Some standalone launches could inherit bundled runtime search paths or
+hidden-window defaults. The manager now requests Steam with normal external
+library/PATH settings and a normal window-show command, then restores its own
+runtime environment. Save preparation and compatibility checks still run before
+the launch request.
+
+This is a launcher correction; the native game plugin remains 0.8.3. A successful
+Steam request does not by itself establish that the game reached its main menu.
+
 ## 0.8.4 - standalone installer preview
 
 - A self-contained installer and manager for 64-bit Windows. Players do not need

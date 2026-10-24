@@ -182,7 +182,8 @@ class PublicSetupTests(unittest.TestCase):
         setup.install(self.game, self.source)
         marker = self.game / 'ConvictionEnhanced-state/practice-originals.ini'
         snapshots = []
-        def start(uri):
+        def start(uri, *, show_cmd):
+            self.assertEqual(show_cmd, 1)
             self.assertEqual(uri, 'steam://rungameid/33220')
             self.assertTrue(marker.exists())
             receipt = json.loads((self.game / 'ConvictionEnhanced-state/public-save-backup.json').read_text())

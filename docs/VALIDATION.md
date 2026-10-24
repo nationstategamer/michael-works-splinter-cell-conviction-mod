@@ -1,5 +1,34 @@
 # Validation and limits
 
+## Standalone launch correction 0.8.5
+
+The standalone manager now temporarily clears its bundled Windows DLL directory
+and removes only bundle-owned PATH entries when requesting Steam. It explicitly
+requests a normal window, then restores the manager's DLL directory and PATH even
+if the request fails. Compatibility, ownership, queue and per-launch save-backup
+checks still run before the external request. The native 0.8.3 plugin is unchanged.
+
+- 204 Python tests passed locally, with three optional symlink checks skipped.
+  Eight new tests cover the external-launch boundary, real Windows DLL-directory
+  state, exact restoration on failure, and refusing Steam when inspection or
+  environment preparation fails.
+- A separate one-file frozen test host launched an owned native x64 probe. The
+  actual child saw an empty custom DLL directory and no bundle-owned PATH entry;
+  the parent restored its exact prior state after success and an injected error.
+  Neither fixture launches Steam, touches a game, nor ships in the player EXE.
+- The source launcher keeps its ordinary environment. The existing test that
+  blocks Steam when save preparation fails still passes.
+
+In the live 0.8.4 upgrade check, the installed plugin/manager matched their release
+hashes, Fusion Fix and controller files were unchanged, and PS5 movement, aiming,
+L2 release and debug-menu navigation were accepted. Intermittent launches did not
+leave a visible game window; a clean Steam request opened it. This evidence and
+the documented frozen-runtime inheritance motivated the correction; the old
+graphics-probe message alone does not establish the cause of a game exit.
+
+See [PyInstaller's external-program guidance](https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#launching-external-programs-from-the-frozen-application).
+The new manager's live launch acceptance is separate from the isolated child test.
+
 ## Standalone setup 0.8.4
 
 The recommended download is now a self-contained Windows 10/11 x64 installer/manager.

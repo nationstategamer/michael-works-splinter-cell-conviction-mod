@@ -1,6 +1,6 @@
 # Installation
 
-For players, download **Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe**
+For players, download **Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe**
 from [Releases](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases).
 This standalone installer and manager include their runtime: no separate Python
 installation is needed. Setup runs on 64-bit Windows 10 or 11; the game plugin is x86.
@@ -28,6 +28,10 @@ Close Conviction before installation, updates, save preparation or removal.
    `<game>/ConvictionEnhanced/Michael Works Mod.exe` for later launches. Each
    launch prepares fresh save protection and applies valid queued preset choices
    with the game closed before requesting startup through Steam.
+
+Version 0.8.5 sends the Steam request with normal external library-search settings
+and a normal window-show command, then restores the manager's own runtime
+environment. Wait for the game to open before making another launch request.
 
 The manager does not create desktop/start-menu shortcuts or launch the game
 automatically after installation. Its four actions are **Check installation**,
@@ -96,7 +100,7 @@ needed. Removal does not delete save backups or restore them over newer progress
 
 ## Developer and legacy packages
 
-The separate `Michael-Works-Splinter-Cell-Conviction-Mod-0.8.4.zip` retains the
+The separate `Michael-Works-Splinter-Cell-Conviction-Mod-0.8.5.zip` retains the
 Python management scripts for developers and existing script workflows. Those
 scripts require Python 3.10 or newer. Extract its `ConvictionEnhanced` folder
 beside the game's `src` folder, then use `Install.cmd` and

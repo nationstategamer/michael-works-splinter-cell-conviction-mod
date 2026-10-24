@@ -1,4 +1,4 @@
-"""Build public preview 0.8.4 using a portable-file allowlist.
+"""Build public preview 0.8.5 using a portable-file allowlist.
 
 The sole compiled file is the production x86 ASI. Game binaries, personal state,
 vendor repositories, test DLLs, harness binaries and build objects are excluded.
@@ -14,7 +14,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parent
 OVERLAY_VERSION = '0.8.3'
-DISTRIBUTION_VERSION = '0.8.4'
+DISTRIBUTION_VERSION = '0.8.5'
 DEPENDENCIES = {
     'Dear ImGui': {
         'tag': 'v1.91.9b',
@@ -132,7 +132,7 @@ def release_files(root):
     names = [
         'VERSION', 'LICENSE.txt', 'COPYRIGHT.txt', 'THIRD-PARTY-NOTICES.md', 'README.md', 'DEBUG-MENU.md', 'VALIDATION.md', 'enhanced.py',
         'Manage.cmd', 'compatibility.json', 'package.py', 'controller_layout.py',
-        'public_setup.py', 'local_baselines.py', 'standalone.py', 'standalone_manager.py',
+        'public_setup.py', 'local_baselines.py', 'standalone.py', 'standalone_manager.py', 'external_launch.py',
         'Install.cmd', 'Uninstall.cmd', 'Prepare Saves.cmd',
         'save_protection.py', 'overlay_bridge.py', 'overlay_install.py', 'Launch Michael Works Mod.cmd', 'Launch Enhanced.cmd',
         'native/README.md', 'native/branding.h', 'native/version.rc', 'native/overlay.cpp', 'native/overlay.def',

@@ -409,7 +409,8 @@ def build(output: Path, work: Path) -> Path:
             '--windowed', '--noupx', '--name', name, '--distpath', str(output),
             '--workpath', str(work / 'pyinstaller'), '--specpath', str(work),
             '--paths', str(PACKAGE), '--version-file', str(version_file),
-            '--hidden-import', 'package', '--hidden-import', 'standalone_manager']
+            '--hidden-import', 'package', '--hidden-import', 'standalone_manager',
+            '--hidden-import', 'external_launch']
     for relative in sorted(payload):
         parent = PurePosixPath(relative).parent.as_posix()
         args += ['--add-data', str(resources / relative) + os.pathsep + parent]

@@ -20,6 +20,7 @@ import subprocess
 import sys
 
 import enhanced
+import external_launch
 
 STATUS = 'overlay-status.ini'
 PENDING = 'overlay-pending.ini'
@@ -305,7 +306,7 @@ def launch(root, save_source=None):
             manager.check_active(active)
             if active and selection_from_active(active)['Controls'] == 'blacklist':
                 manager.check_controls()
-            os.startfile('steam://rungameid/33220')
+            external_launch.request_steam_launch()
         return 'Launch requested through Steam. Pause the game, then use Ctrl+Shift+F10 for the Michael Works mod menu.'
 
 

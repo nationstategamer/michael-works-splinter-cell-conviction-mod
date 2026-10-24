@@ -20,7 +20,7 @@ import public_setup
 import save_protection
 
 
-VERSION = '0.8.4'
+VERSION = '0.8.5'
 TARGET = 'ConvictionEnhanced/Michael Works Mod.exe'
 RECORD = 'standalone-manager.json'
 JOURNAL = 'standalone-manager-pending.json'

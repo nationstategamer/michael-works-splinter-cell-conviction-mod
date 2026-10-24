@@ -3,8 +3,8 @@
 A free personal-use Windows mod by **Michael Works**, with a controller-friendly
 debug menu, camera tools, interface controls and protected solo practice.
 
-**Public preview 0.8.4.** Download
-**Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe** from this repository's
+**Public preview 0.8.5.** Download
+**Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe** from this repository's
 [Releases](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases).
 The standalone installer and manager run on 64-bit Windows 10 or 11 without installing
 Python. The game plugin remains the tested x86 native build 0.8.3.
@@ -29,7 +29,7 @@ uses Python; GitHub's automatic source-code ZIP does not contain the compiled mo
 1. Install your licensed Steam copy of Conviction and the supported official
    Fusion Fix bundle, which includes its matching loader and Xidi controller
    components. See [compatibility and download](docs/COMPATIBILITY.md).
-2. Exit the game and run **Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe**.
+2. Exit the game and run **Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe**.
    Select **Game folder**, or use **Browse** to choose the folder containing `src`.
 3. Choose **Check installation**, then **Install / update**. Setup verifies the
    supported files and prepares a private original-save backup. If more than one

@@ -26,6 +26,18 @@ Choose the intended **Save folder** if multiple accounts exist.
 If no product-2 save exists, create a local game profile/save normally, exit and
 prepare saves again. Never copy another person's practice source marker.
 
+## Steam launch requested, but no game window
+
+Use setup 0.8.5 or newer and update the installed manager with the game closed.
+This version sends the request with normal external library-search and window-show
+settings. A successful request means Windows passed it to Steam; it does not
+confirm that Conviction reached its main menu.
+
+Wait for Steam to finish starting, check its game status and avoid repeated launch
+requests while it is busy. If it still does not open, share the manager's short
+status message and the installed game/Fusion versions. Keep save/account paths
+private. Do not remove save-protection records or change DLL files to force startup.
+
 ## Controller or mouse
 
 Enable Steam Input for Conviction and the game's Use Controller option. Use the

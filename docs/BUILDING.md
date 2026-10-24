@@ -21,7 +21,7 @@ ConvictionEnhanced/native/build.cmd
 python tools/run_native_tests.py
 python tools/public_audit.py --source
 python ConvictionEnhanced/package.py
-python tools/public_audit.py --zip ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-0.8.4.zip
+python tools/public_audit.py --zip ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-0.8.5.zip
 ```
 
 The build discovers Visual Studio with vswhere, or uses an initialized x86
@@ -31,9 +31,10 @@ The build writes the production ASI, isolated test hosts and a generated
 public payload, and records the release version and binary hash before creating
 the ZIP and SHA-256 sidecar.
 
-Public distribution 0.8.4 adds the standalone setup/manager. The native gameplay
-plugin remains version 0.8.3; its compatibility and save-protection checks are
-unchanged. An installer release version does not imply new game hooks.
+Public distribution 0.8.5 corrects external Steam launch from the standalone
+setup/manager. The native gameplay plugin remains version 0.8.3; its compatibility
+and save-protection checks are unchanged. An installer release version does not
+imply new game hooks.
 
 Production exports only `InitializeASI`. Test exports belong exclusively to
 `overlay_test.dll`; never install or distribute that DLL. Release builds define
@@ -74,7 +75,7 @@ python -m venv ../mw-mod-installer-env
 ```
 
 The builder creates the one-file/windowed
-`Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe`, its SHA-256 sidecar,
+`Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe`, its SHA-256 sidecar,
 and a JSON build/audit record in `ConvictionEnhanced/dist`. PyInstaller work and
 cache files use an OS temporary directory; an explicit new `--work-dir` is also
 available. The installer requests no administrator privileges. Use a user-writable
@@ -88,10 +89,15 @@ Python code objects for private paths/credentials, missing or changed resources,
 and forbidden game, test and prerequisite content. These are focused publication
 checks, not a general malware certification or a code-signing service.
 
+When requesting Steam, the frozen launcher temporarily clears its bundled DLL
+search directory and removes bundled-runtime entries from PATH, uses a normal
+window-show command, and restores the manager's runtime environment afterward.
+This keeps the external launch separate from the manager's bundled runtime.
+
 To verify a built EXE without touching a game, use a new JSON output path:
 
 ```powershell
-& './ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe' --self-check '../standalone-self-check.json'
+& './ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe' --self-check '../standalone-self-check.json'
 ```
 
 The result records the public version, reviewed native version/hash and resource

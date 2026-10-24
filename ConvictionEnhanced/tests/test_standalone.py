@@ -19,11 +19,11 @@ class PayloadTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.binary = b'owned synthetic production plugin'
         sha = hashlib.sha256(self.binary).hexdigest()
-        data = {'BUILD.json': json.dumps({'schema': 1, 'overlay_version': '0.8.3', 'sha256': sha,
+        data = {'BUILD.json': json.dumps({'schema': 1, 'overlay_version': standalone.release_package.OVERLAY_VERSION, 'sha256': sha,
                                          'production_exports': ['InitializeASI']}).encode(),
                 'compatibility.json': b'{}', 'baselines/hashes.json': b'{}',
                 'native/build/ConvictionEnhanced.asi': self.binary, 'LICENSE.txt': b'Owned fixture license'}
-        self.manifest = {'schema': 1, 'distribution_version': '0.8.4', 'native_sha256': sha,
+        self.manifest = {'schema': 1, 'distribution_version': standalone.VERSION, 'native_sha256': sha,
                          'files': {name: hashlib.sha256(value).hexdigest() for name, value in data.items()}}
         for name, value in data.items():
             target = self.root / name

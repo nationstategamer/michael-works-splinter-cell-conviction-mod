@@ -34,7 +34,7 @@ jobs:
       - name: Build and audit public release archive
         run: |
           python ConvictionEnhanced/package.py
-          python tools/public_audit.py --zip ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-0.8.4.zip
+          python tools/public_audit.py --zip ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-0.8.5.zip
       - name: Build standalone installer with verified dependencies
         shell: pwsh
         run: |
@@ -46,17 +46,23 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Pinned standalone dependencies failed verification' }
           & $buildPython tools/build_standalone.py --work-dir (Join-Path $env:RUNNER_TEMP 'mw-mod-standalone-build')
           if ($LASTEXITCODE -ne 0) { throw 'Standalone build or embedded audit failed' }
+      - name: Verify frozen external process launch isolation
+        shell: pwsh
+        run: |
+          $buildPython = Join-Path $env:RUNNER_TEMP 'mw-mod-standalone-env/Scripts/python.exe'
+          & $buildPython tools/verify_frozen_launch.py --work-dir (Join-Path $env:RUNNER_TEMP 'mw-mod-frozen-launch-test')
+          if ($LASTEXITCODE -ne 0) { throw 'Frozen child DLL search path or parent restoration check failed' }
       - name: Verify standalone without Python or a game
         shell: pwsh
         run: |
-          $exe = (Resolve-Path 'ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe').Path
+          $exe = (Resolve-Path 'ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe').Path
           $report = Join-Path $env:RUNNER_TEMP 'standalone-self-check.json'
           $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
           Remove-Item Env:\PYTHONHOME, Env:\PYTHONPATH -ErrorAction SilentlyContinue
           $process = Start-Process -FilePath $exe -ArgumentList @('--self-check', ('"' + $report + '"')) -Wait -PassThru -WindowStyle Hidden
           if ($process.ExitCode -ne 0) { throw 'Standalone self-check failed' }
           $result = Get-Content -LiteralPath $report -Raw | ConvertFrom-Json
-          if ($result.ok -ne $true -or $result.distribution_version -ne '0.8.4') { throw 'Standalone self-check report invalid' }
+          if ($result.ok -ne $true -or $result.distribution_version -ne '0.8.5') { throw 'Standalone self-check report invalid' }
           $fixture = Join-Path $env:RUNNER_TEMP 'mw-mod-empty-game'
           New-Item -ItemType Directory -Path $fixture | Out-Null
           $uiReport = Join-Path $env:RUNNER_TEMP 'standalone-ui-self-check.json'
@@ -67,7 +73,7 @@ jobs:
       - name: Upload reviewed build artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: michael-works-mod-0.8.4-windows
+          name: michael-works-mod-0.8.5-windows
           path: |
             ConvictionEnhanced/dist/*.zip
             ConvictionEnhanced/dist/*.sha256

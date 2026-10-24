@@ -190,7 +190,8 @@ class BridgeTests(unittest.TestCase):
     def test_launch_applies_before_requesting_fixed_steam_uri(self):
         self.queue(FOV='100')
         observed = []
-        def start(uri):
+        def start(uri, *, show_cmd):
+            self.assertEqual(show_cmd, 1)
             observed.append((uri, self.manager.active()['selection']['fov']))
             self.assertTrue(self.manager.state_path('operation.lock').exists())
         with mock.patch.object(bridge.os, 'startfile', start, create=True):
