@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.8.4 - standalone installer preview
+
+- A self-contained installer and manager for 64-bit Windows. Players do not need
+  to install Python. The installed manager provides compatibility checks,
+  installation/update, protected launch and mod removal.
+- Uses the same strict game/Fusion Fix checks and original-save preparation as
+  the public script workflow. Launch prepares a fresh backup before requesting
+  startup through Steam; ambiguous save accounts require explicit selection.
+- Optional camera/control, Tactical stealth and Deniable Ops presets use a local
+  baseline folder selected in the manager. No automatic dump or prerequisite
+  download is performed.
+- Removal keeps original saves, private backups and the manager EXE for safe
+  inspection or reinstallation. The Python developer ZIP remains available.
+
+The native game plugin remains 0.8.3; this release changes public installation
+and management, preserving its camera, PS5 controls and protected solo tools.
+
 ## 0.8.3 - public preview
 
 - Public setup, uninstall and launch helpers with compatibility checks and local

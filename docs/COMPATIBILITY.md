@@ -1,5 +1,9 @@
 # Supported configuration
 
+The standalone installer requires Windows 10 or 11 on x64. The game/plugin remain
+x86. No separate Python installation is needed; its bundled runtime sets this
+installer requirement. Older Windows versions are not supported by this EXE.
+
 Windows/x86, Steam build 11503660, version marker C-455_L-340_S-76. Exact game and
 Fusion fingerprints are checked because native hooks depend on verified layouts.
 

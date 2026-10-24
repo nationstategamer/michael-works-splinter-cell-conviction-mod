@@ -1,5 +1,38 @@
 # Validation and limits
 
+## Standalone setup 0.8.4
+
+The recommended download is now a self-contained Windows 10/11 x64 installer/manager.
+Players do not install Python. The native x86 plugin remains the reviewed 0.8.3
+binary below; gameplay, controller, Fusion hooks and save-isolation code are
+unchanged by this installer update.
+
+- 194 Python tests passed, with three optional symlink checks skipped on this host.
+  These include the existing backend suites and 52 new installer, ownership,
+  recovery, discovery, payload and build-boundary tests.
+- Synthetic end-to-end installs prepared original-save backups before installing
+  the core, copied only the owned manager, and retained originals/backups on
+  removal. Account selection is remembered privately and revalidated on launch.
+- Ownership conflicts refused replacement. Failed manager updates rolled back
+  exactly; interrupted journals reject corrupt backups or external edits. The
+  standalone operation lock was tested across processes and abrupt process exit.
+- The frozen EXE passed its resource/plugin integrity check with PATH restricted
+  to Windows and an invalid PYTHONHOME. It uses its bundled runtime.
+- The application's Tk self-test checked a mapped window, 14 control bounds,
+  the license viewer and read-only refusal of an empty unsupported game folder.
+  The test folder remained empty. This is an application UI harness check;
+  independent desktop automation was unavailable in this session.
+- The build inspects embedded resources, Python code paths/constants and nested
+  runtime ZIPs for private paths, credentials and excluded game/test data. Exact
+  executable hash, runtime version and payload counts are published in its
+  checksum/build-metadata sidecars.
+
+These installer checks use isolated synthetic folders, not the working game or
+original save account. The existing 12-file protected installation baseline still
+matched after development. GitHub CI repeats tests/builds, payload checks and the
+empty-folder UI harness. A clean-PC or fresh physical-controller acceptance test
+is separate from the preserved gameplay evidence below.
+
 ## Public preview 0.8.3
 
 Public preparation removes distributed game baselines, adds clean setup and

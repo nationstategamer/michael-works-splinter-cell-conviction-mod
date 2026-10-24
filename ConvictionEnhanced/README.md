@@ -3,10 +3,15 @@
 A free personal-use Windows mod by **Michael Works**, with a controller-friendly
 debug menu, camera tools, interface controls and protected solo practice.
 
-**Public preview 0.8.3.** This is a community mod for a specific supported game
-and Fusion Fix build. It is independent of Ubisoft and the prerequisite authors.
-Download the compiled ZIP from this repository's **Releases** section. GitHub's
-source-code ZIP is for building and does not contain the compiled mod.
+**Public preview 0.8.4.** Download
+**Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe** from this repository's
+[Releases](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases).
+The standalone installer and manager run on 64-bit Windows 10 or 11 without installing
+Python. The game plugin remains the tested x86 native build 0.8.3.
+
+This is a community mod for a specific supported game and Fusion Fix build,
+independent of Ubisoft and the prerequisite authors. The separate developer ZIP
+uses Python; GitHub's automatic source-code ZIP does not contain the compiled mod.
 
 ## Features
 
@@ -24,20 +29,22 @@ source-code ZIP is for building and does not contain the compiled mod.
 1. Install your licensed Steam copy of Conviction and the supported official
    Fusion Fix bundle, which includes its matching loader and Xidi controller
    components. See [compatibility and download](../docs/COMPATIBILITY.md).
-2. Exit the game. Extract the release's **ConvictionEnhanced** folder directly into
-   your Conviction game folder, beside the existing `src` directory.
-3. Install Python 3.10 or newer if needed, then run **ConvictionEnhanced/Install.cmd**.
-   Setup checks compatibility, installs the owned mod ASI and prepares a private
-   original-save backup. If it finds more than one save account, select the intended
-   save directory explicitly as explained in the [installation guide](../docs/INSTALLATION.md).
+2. Exit the game and run **Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe**.
+   Select **Game folder**, or use **Browse** to choose the folder containing `src`.
+3. Choose **Check installation**, then **Install / update**. Setup verifies the
+   supported files and prepares a private original-save backup. If more than one
+   save account exists, select the intended **Save folder** as explained in the
+   [installation guide](../docs/INSTALLATION.md).
 4. For PS5, enable Steam Input for the game and enable **Use Controller** in its
    own settings. The mod respects a saved controller-off choice.
-5. Start through **ConvictionEnhanced/Launch Michael Works Mod.cmd** so save protection
-   is prepared and any valid queued preset changes are applied while the game is closed.
+5. Use **Launch game** in the manager for later launches. Its installed copy is
+   **ConvictionEnhanced/Michael Works Mod.exe**. Each launch prepares save protection
+   and applies valid queued preset changes while the game is closed.
 
 Core camera, interface and Exploration features do not need copied game configuration
-files. Optional presets require a one-time local baseline import; the guide explains
-Fusion Fix's local dump feature. No game data or save files are bundled here.
+files. Optional presets have their own local baseline selection in the manager;
+the guide explains Fusion Fix's one-time dump feature. Setup does not start a dump
+or download prerequisites. No game data or save files are bundled here.
 
 ## Play and return safely
 

@@ -33,14 +33,45 @@ jobs:
       - name: Build and audit public release archive
         run: |
           python ConvictionEnhanced/package.py
-          python tools/public_audit.py --zip ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-0.8.3.zip
+          python tools/public_audit.py --zip ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-0.8.4.zip
+      - name: Build standalone installer with verified dependencies
+        shell: pwsh
+        run: |
+          $buildEnv = Join-Path $env:RUNNER_TEMP 'mw-mod-standalone-env'
+          python -m venv $buildEnv
+          if ($LASTEXITCODE -ne 0) { throw 'Standalone build environment failed' }
+          $buildPython = Join-Path $buildEnv 'Scripts/python.exe'
+          & $buildPython -m pip install --disable-pip-version-check --no-cache-dir --require-hashes --only-binary=:all: -r tools/standalone-requirements.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned standalone dependencies failed verification' }
+          & $buildPython tools/build_standalone.py --work-dir (Join-Path $env:RUNNER_TEMP 'mw-mod-standalone-build')
+          if ($LASTEXITCODE -ne 0) { throw 'Standalone build or embedded audit failed' }
+      - name: Verify standalone without Python or a game
+        shell: pwsh
+        run: |
+          $exe = (Resolve-Path 'ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe').Path
+          $report = Join-Path $env:RUNNER_TEMP 'standalone-self-check.json'
+          $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
+          Remove-Item Env:\PYTHONHOME, Env:\PYTHONPATH -ErrorAction SilentlyContinue
+          $process = Start-Process -FilePath $exe -ArgumentList @('--self-check', ('"' + $report + '"')) -Wait -PassThru -WindowStyle Hidden
+          if ($process.ExitCode -ne 0) { throw 'Standalone self-check failed' }
+          $result = Get-Content -LiteralPath $report -Raw | ConvertFrom-Json
+          if ($result.ok -ne $true -or $result.distribution_version -ne '0.8.4') { throw 'Standalone self-check report invalid' }
+          $fixture = Join-Path $env:RUNNER_TEMP 'mw-mod-empty-game'
+          New-Item -ItemType Directory -Path $fixture | Out-Null
+          $uiReport = Join-Path $env:RUNNER_TEMP 'standalone-ui-self-check.json'
+          $ui = Start-Process -FilePath $exe -ArgumentList @('--ui-self-check', ('"' + $uiReport + '"'), '--game', ('"' + $fixture + '"')) -Wait -PassThru -WindowStyle Hidden
+          if ($ui.ExitCode -ne 0) { throw 'Standalone interface self-check failed' }
+          $uiResult = Get-Content -LiteralPath $uiReport -Raw | ConvertFrom-Json
+          if ($uiResult.ok -ne $true) { throw 'Standalone interface self-check report invalid' }
       - name: Upload reviewed build artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: michael-works-mod-0.8.3-windows-x86
+          name: michael-works-mod-0.8.4-windows
           path: |
             ConvictionEnhanced/dist/*.zip
             ConvictionEnhanced/dist/*.sha256
+            ConvictionEnhanced/dist/*Setup-*.exe
+            ConvictionEnhanced/dist/*Setup-*.exe.json
           if-no-files-found: error
           retention-days: 14
 

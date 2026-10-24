@@ -1,4 +1,4 @@
-"""Build public preview 0.8.3 using a portable-file allowlist.
+"""Build public preview 0.8.4 using a portable-file allowlist.
 
 The sole compiled file is the production x86 ASI. Game binaries, personal state,
 vendor repositories, test DLLs, harness binaries and build objects are excluded.
@@ -14,6 +14,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parent
 OVERLAY_VERSION = '0.8.3'
+DISTRIBUTION_VERSION = '0.8.4'
 DEPENDENCIES = {
     'Dear ImGui': {
         'tag': 'v1.91.9b',
@@ -131,7 +132,8 @@ def release_files(root):
     names = [
         'VERSION', 'LICENSE.txt', 'COPYRIGHT.txt', 'THIRD-PARTY-NOTICES.md', 'README.md', 'DEBUG-MENU.md', 'VALIDATION.md', 'enhanced.py',
         'Manage.cmd', 'compatibility.json', 'package.py', 'controller_layout.py',
-        'public_setup.py', 'local_baselines.py', 'Install.cmd', 'Uninstall.cmd', 'Prepare Saves.cmd',
+        'public_setup.py', 'local_baselines.py', 'standalone.py', 'standalone_manager.py',
+        'Install.cmd', 'Uninstall.cmd', 'Prepare Saves.cmd',
         'save_protection.py', 'overlay_bridge.py', 'overlay_install.py', 'Launch Michael Works Mod.cmd', 'Launch Enhanced.cmd',
         'native/README.md', 'native/branding.h', 'native/version.rc', 'native/overlay.cpp', 'native/overlay.def',
         'native/build.cmd', 'native/harness.cpp', 'native/build/ConvictionEnhanced.asi',
@@ -214,6 +216,7 @@ def release_files(root):
     metadata = dict(product_name='Michael Works Splinter Cell Conviction Mod',
                     copyright='Copyright (c) 2026 Michael Works. All rights reserved. Original mod work only.',
                     overlay_version=OVERLAY_VERSION,
+                    distribution_version=DISTRIBUTION_VERSION,
                     manager_version=payload['VERSION'].decode('ascii').strip(),
                     distribution='public-preview',
                     license='LicenseRef-Michael-Works-Personal-Use',
@@ -234,7 +237,7 @@ def build(root=ROOT):
     manifest = {name: hashlib.sha256(data).hexdigest() for name, data in sorted(payload.items())}
     dist = root / 'dist'
     dist.mkdir(exist_ok=True)
-    target = dist / ('Michael-Works-Splinter-Cell-Conviction-Mod-' + OVERLAY_VERSION + '.zip')
+    target = dist / ('Michael-Works-Splinter-Cell-Conviction-Mod-' + DISTRIBUTION_VERSION + '.zip')
     temporary = target.with_suffix('.zip.tmp')
     try:
         with zipfile.ZipFile(temporary, 'w', zipfile.ZIP_DEFLATED) as archive:

@@ -10,4 +10,6 @@
 *.cmd text eol=crlf
 *.rc text eol=crlf
 *.def text eol=crlf
+# Preserve the exact upstream license bytes checked by the standalone builder.
+tools/runtime-licenses/OpenSSL-LICENSE.txt text eol=lf
 

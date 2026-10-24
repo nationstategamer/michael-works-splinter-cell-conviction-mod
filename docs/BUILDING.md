@@ -21,7 +21,7 @@ ConvictionEnhanced/native/build.cmd
 python tools/run_native_tests.py
 python tools/public_audit.py --source
 python ConvictionEnhanced/package.py
-python tools/public_audit.py --zip ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-0.8.3.zip
+python tools/public_audit.py --zip ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-0.8.4.zip
 ```
 
 The build discovers Visual Studio with vswhere, or uses an initialized x86
@@ -30,6 +30,10 @@ The build writes the production ASI, isolated test hosts and a generated
 `ConvictionEnhanced/BUILD.json`. Packaging validates the x86 binary, exports and
 public payload, and records the release version and binary hash before creating
 the ZIP and SHA-256 sidecar.
+
+Public distribution 0.8.4 adds the standalone setup/manager. The native gameplay
+plugin remains version 0.8.3; its compatibility and save-protection checks are
+unchanged. An installer release version does not imply new game hooks.
 
 Production exports only `InitializeASI`. Test exports belong exclusively to
 `overlay_test.dll`; never install or distribute that DLL. Release builds define
@@ -51,6 +55,45 @@ process verifies persisted HUD choices. A pass does not establish physical
 controller behavior or compatibility with a different game build. Hosted CI runs
 the Python and native CPU/host tests, builds the release and audits its contents;
 it does not run the graphics harness or claim in-game acceptance.
+
+## Standalone installer/manager
+
+Players on Windows 10/11 x64 can use the public Setup EXE without installing Python. Building that EXE
+requires 64-bit Windows Python, including Tcl/Tk, and the exact hash-pinned build
+dependencies. Use a private environment outside the checkout:
+
+```powershell
+python -m venv ../mw-mod-installer-env
+& '../mw-mod-installer-env/Scripts/python.exe' -m pip install --require-hashes --only-binary=:all: -r tools/standalone-requirements.txt
+& '../mw-mod-installer-env/Scripts/python.exe' tools/build_standalone.py
+```
+
+The builder creates the one-file/windowed
+`Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe`, its SHA-256 sidecar,
+and a JSON build/audit record in `ConvictionEnhanced/dist`. PyInstaller work and
+cache files use an OS temporary directory; an explicit new `--work-dir` is also
+available. The installer requests no administrator privileges. Use a user-writable
+game folder instead of elevating a one-file application.
+
+Only allowlisted mod data, the reviewed x86 ASI, documentation and license notices
+are added as resources. Python modules and the interpreter/Tcl/Tk runtime are
+collected by PyInstaller. A resource hash manifest is checked before frozen
+operations. The builder inspects the executable archive, nested runtime ZIPs and
+Python code objects for private paths/credentials, missing or changed resources,
+and forbidden game, test and prerequisite content. These are focused publication
+checks, not a general malware certification or a code-signing service.
+
+To verify a built EXE without touching a game, use a new JSON output path:
+
+```powershell
+& './ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.4.exe' --self-check '../standalone-self-check.json'
+```
+
+The result records the public version, reviewed native version/hash and resource
+count. CI builds and runs this check with Python removed from the launched EXE's
+PATH. CPython, Tcl/Tk, OpenSSL and PyInstaller notices are bundled and available
+in the app's license viewer. The Python runtime/compiler environment affects the
+installer's hash; each release publishes its own checksum.
 
 ## Optional local integration check
 
