@@ -1,0 +1,31 @@
+#include <windows.h>
+// Original mod metadata. Third-party notices remain in their own source files.
+1 VERSIONINFO
+ FILEVERSION 0,8,3,0
+ PRODUCTVERSION 0,8,3,0
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+ FILEFLAGS 0
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_DLL
+ FILESUBTYPE 0
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "Michael Works\0"
+            VALUE "FileDescription", "Michael Works Splinter Cell Conviction Mod\0"
+            VALUE "FileVersion", "0.8.3\0"
+            VALUE "InternalName", "ConvictionEnhanced\0"
+            VALUE "LegalCopyright", "Copyright (c) 2026 Michael Works. All rights reserved.\0"
+            VALUE "OriginalFilename", "ConvictionEnhanced.asi\0"
+            VALUE "ProductName", "Michael Works Splinter Cell Conviction Mod\0"
+            VALUE "ProductVersion", "0.8.3\0"
+            VALUE "Comments", "Original mod work; third-party licenses apply separately.\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 1200
+    END
+END

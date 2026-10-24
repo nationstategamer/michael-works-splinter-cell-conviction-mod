@@ -1,0 +1,18 @@
+Michael Works Splinter Cell Conviction Mod
+
+Copyright (c) 2026 Michael Works. All rights reserved.
+
+This notice covers the original mod code, original configuration changes and
+original documentation created for this project, to the extent that those
+contributions are protected by copyright.
+
+This notice does not claim ownership of Ubisoft's game, game assets, trademarks,
+game-derived configuration baselines, Fusion Fix, Xidi, ASI loaders, Dear ImGui,
+MinHook, Hacker Disassembler Engine, or any other third-party work. It does not
+replace, restrict or reassign rights granted by their existing licenses.
+
+Third-party components retain their own copyright notices and license terms.
+See THIRD-PARTY-NOTICES.md and the license files included with those components.
+
+This copyright notice is not a statement that copyright has been registered or
+that a trademark has been registered.

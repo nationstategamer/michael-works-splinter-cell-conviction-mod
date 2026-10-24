@@ -1,0 +1,48 @@
+name: Verify public source and build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, verified official tag
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.12'
+      - name: Audit public source
+        run: python tools/public_audit.py --source
+      - name: Test management and save protection
+        run: python -m unittest discover -s ConvictionEnhanced/tests -p "test_*.py"
+      - name: Build x86 release and isolated native hosts
+        shell: cmd
+        run: call ConvictionEnhanced\native\build.cmd
+      - name: Run CPU/native-host fixtures
+        run: python tools/run_native_tests.py
+      - name: Build and audit public release archive
+        run: |
+          python ConvictionEnhanced/package.py
+          python tools/public_audit.py --zip ConvictionEnhanced/dist/Michael-Works-Splinter-Cell-Conviction-Mod-0.8.3.zip
+      - name: Upload reviewed build artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: michael-works-mod-0.8.3-windows-x86
+          path: |
+            ConvictionEnhanced/dist/*.zip
+            ConvictionEnhanced/dist/*.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+# Hosted runners validate CPU fixtures. The D3D9/controller harness and live
+# campaign/Deniable Ops acceptance require a local Windows graphics session.

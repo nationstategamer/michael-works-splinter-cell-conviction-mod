@@ -1,0 +1,44 @@
+Michael Works Personal Use License 1.0
+
+Copyright (c) 2026 Michael Works. All rights reserved except as expressly granted below.
+
+1. Scope and ownership
+This license covers only the original Michael Works code, configuration changes
+and documentation in this project. Michael Works retains ownership of those
+contributions. The game, trademarks and third-party components are separately
+owned and are not licensed by Michael Works.
+
+2. Free personal use
+You may download, install, run, inspect and privately modify the original mod
+work for your personal, non-commercial use. You may make private backup copies.
+You must obtain and use the game and all prerequisites under their own terms.
+No game files, game license or right to bypass access restrictions is provided.
+
+3. Reserved rights
+Selling, charging for access to, commercial exploitation of, or redistribution
+of the original or modified Michael Works work requires prior written permission
+from Michael Works, except for the GitHub functionality described below.
+Please share the official project/release link instead of repackaging the mod.
+Do not remove the copyright, license or third-party notices from permitted copies.
+No right to impersonate Michael Works or imply official game-owner endorsement
+is granted. All rights not expressly granted are reserved.
+
+4. GitHub and contributions
+Viewing and forking within GitHub's normal service functionality remain subject
+to GitHub's applicable Terms of Service. This license does not restrict rights
+that those terms require for operating a public repository. If you deliberately
+submit your own contribution to this project for inclusion, you license that
+contribution under these same terms unless you and Michael Works agree otherwise.
+
+5. Third-party components
+This license does not replace or narrow permissions granted by third-party
+licenses. Dear ImGui, MinHook/HDE and miniz retain their own notices and licenses.
+See THIRD-PARTY-NOTICES.md and the corresponding vendor license files. Game-derived
+configuration files, saves, game binaries and compatibility-component binaries
+are not distributed in this release.
+
+6. No warranty
+TO THE EXTENT PERMITTED BY APPLICABLE LAW, THE ORIGINAL MOD WORK IS PROVIDED
+AS IS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND. MICHAEL WORKS IS NOT
+LIABLE FOR DAMAGES ARISING FROM ITS USE. Nothing here excludes rights or
+liabilities that applicable law does not permit to be excluded.
