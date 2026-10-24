@@ -1,5 +1,10 @@
 # Troubleshooting and rollback
 
+If an interrupted setup is reported, close Conviction and other copies of the
+manager, then choose **Recover interrupted setup**. It recovers only recorded
+owned operations and retains original-save backups. Changed files or corrupt
+backups are refused; keep the private state folder while resolving a conflict.
+
 Open **Michael Works Mod.exe**, select the game folder and choose
 **Check installation** while Conviction is closed. Share only a short redacted
 summary; keep save/account directories and backups private.

@@ -57,7 +57,7 @@ restores a backup over newer progress automatically.
 
 ## Optional presets
 
-Open the manager's optional presets section. **Camera and controls**,
+Open the manager's optional presets section. **Use camera and control presets**,
 **Tactical stealth** and **Deniable Ops** use five verified pristine baseline
 INIs from your own game. These files are not distributed with the mod. Select an
 existing compatible local baseline folder, or create a local dump using the

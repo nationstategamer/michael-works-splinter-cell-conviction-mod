@@ -2,6 +2,7 @@
 from pathlib import Path
 import importlib.util
 import io
+import json
 import marshal
 import sys
 import tempfile
@@ -119,6 +120,46 @@ class StandaloneBuildTests(unittest.TestCase):
             with self.assertWarns(UserWarning):
                 archive.writestr('same.txt', b'second')
         self.assertTrue(build.zip_findings(memory.getvalue(), 'runtime.zip'))
+
+    def test_exact_tcltk_fallback_uses_separate_verified_upstream_notices(self):
+        tcl = build.fallback_tcltk_license('tcl', '8.6.15')
+        tk = build.fallback_tcltk_license('tk', '8.6.15')
+        self.assertNotEqual(tcl, tk)
+        self.assertNotIn(b'Apple Inc.', tcl)
+        self.assertIn(b'Apple Inc.', tk)
+        for component, version in (('tcl', '9.0.4'), ('tk', '8.6.14'), ('unknown', '8.6.15')):
+            with self.assertRaises(ValueError):
+                build.fallback_tcltk_license(component, version)
+        import _tkinter
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            (base / 'DLLs').mkdir()
+            (base / 'DLLs/tk86t.dll').write_bytes(b'owned-version-resource-fixture')
+            with mock.patch.object(_tkinter, 'TK_VERSION', '8.6'), \
+                    mock.patch.object(build, 'windows_file_version', return_value='8.6.15'):
+                self.assertEqual(build.runtime_component_version('tk', base), '8.6.15')
+            with mock.patch.object(_tkinter, 'TK_VERSION', '9.0'), \
+                    mock.patch.object(build, 'windows_file_version', return_value='8.6.15'):
+                with self.assertRaises(ValueError):
+                    build.runtime_component_version('tk', base)
+
+    def test_tcltk_fallback_rejects_tampered_or_redirected_catalog_entries(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory).resolve()
+            content = b'owned-license-fixture'
+            (path / 'notice.txt').write_bytes(content)
+            entry = {'file': 'notice.txt', 'sha256': build.sha256(content)}
+            catalog = {'schema': 1, 'licenses': {'tcl': {'8.6.15': entry}}}
+            pin = path / 'TCLTK-PINNED.json'
+            pin.write_text(json.dumps(catalog))
+            self.assertEqual(build.fallback_tcltk_license('tcl', '8.6.15', path), content)
+            (path / 'notice.txt').write_bytes(b'tampered')
+            with self.assertRaisesRegex(ValueError, 'integrity'):
+                build.fallback_tcltk_license('tcl', '8.6.15', path)
+            entry['file'] = '../outside.txt'
+            pin.write_text(json.dumps(catalog))
+            with self.assertRaises(ValueError):
+                build.fallback_tcltk_license('tcl', '8.6.15', path)
 
 
 if __name__ == '__main__':

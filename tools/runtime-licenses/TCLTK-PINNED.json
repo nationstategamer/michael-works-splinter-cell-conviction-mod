@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "licenses": {
+    "tcl": {
+      "8.6.15": {
+        "file": "Tcl-8.6.15-LICENSE.txt",
+        "sha256": "c0a69a2bfd757361ec7e6143973b103c90409316b49e9c88db26ad6388e79f16",
+        "source": "https://raw.githubusercontent.com/tcltk/tcl/core-8-6-15/license.terms",
+        "tag": "core-8-6-15"
+      }
+    },
+    "tk": {
+      "8.6.15": {
+        "file": "Tk-8.6.15-LICENSE.txt",
+        "sha256": "2cde822b93ca16ae535c954b7dfe658b4ad10df2a193628d1b358f1765e8b198",
+        "source": "https://raw.githubusercontent.com/tcltk/tk/core-8-6-15/license.terms",
+        "tag": "core-8-6-15"
+      }
+    }
+  }
+}

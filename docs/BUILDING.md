@@ -95,6 +95,12 @@ PATH. CPython, Tcl/Tk, OpenSSL and PyInstaller notices are bundled and available
 in the app's license viewer. The Python runtime/compiler environment affects the
 installer's hash; each release publishes its own checksum.
 
+If an official Windows Python installation omits its Tcl/Tk license files, the
+builder can use the separately hash-pinned upstream Tcl 8.6.15 and Tk 8.6.15
+notices. It checks the actual Tcl patch level and Tk DLL version before selecting
+either notice. Other missing-notice versions fail the build; Tcl 9 notices are
+never substituted for Tcl 8. Complete local runtime notices remain preferred.
+
 ## Optional local integration check
 
 `ConvictionEnhanced/tests/integration_build.py --help` describes a separately

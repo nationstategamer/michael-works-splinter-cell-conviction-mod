@@ -135,6 +135,7 @@ def friendly_error(error, save_source=None):
         return ('Windows could not access a required file. Close other copies of this manager '
                 'and check that you can write to the game folder. Your save backups are retained.')
     text = str(error) or 'The operation could not finish. No original saves were replaced.'
+    text = text.replace('with enhanced.py recover', 'using Recover interrupted setup')
     if save_source:
         text = text.replace(str(save_source), '<selected save folder>')
     profile = os.environ.get('USERPROFILE')

@@ -159,12 +159,91 @@ def plain_bytes(path: Path) -> bytes:
     return data
 
 
+def windows_file_version(path: Path) -> str:
+    """Read Tk's actual FileVersion string without loading Tk or opening a window.
+
+    Tcl/Tk fixed numeric resources encode release level and serial in their final
+    two fields, so treating the third numeric field as a patch version is wrong.
+    """
+    import ctypes
+    from ctypes import wintypes
+    library = ctypes.WinDLL(str(Path(os.environ['SystemRoot']) / 'System32/version.dll'),
+                            use_last_error=True)
+    library.GetFileVersionInfoSizeW.argtypes = [wintypes.LPCWSTR, ctypes.POINTER(wintypes.DWORD)]
+    library.GetFileVersionInfoSizeW.restype = wintypes.DWORD
+    library.GetFileVersionInfoW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD,
+                                           wintypes.DWORD, ctypes.c_void_p]
+    library.GetFileVersionInfoW.restype = wintypes.BOOL
+    library.VerQueryValueW.argtypes = [ctypes.c_void_p, wintypes.LPCWSTR,
+                                      ctypes.POINTER(ctypes.c_void_p), ctypes.POINTER(wintypes.UINT)]
+    library.VerQueryValueW.restype = wintypes.BOOL
+    size = library.GetFileVersionInfoSizeW(str(path), None)
+    if not size:
+        raise ValueError('The Tk runtime DLL has no readable version resource')
+    buffer = ctypes.create_string_buffer(size)
+    pointer, length = ctypes.c_void_p(), wintypes.UINT()
+    if (not library.GetFileVersionInfoW(str(path), 0, size, buffer)
+            or not library.VerQueryValueW(buffer, '\\VarFileInfo\\Translation',
+                                           ctypes.byref(pointer), ctypes.byref(length))
+            or length.value < 4 or length.value % 4):
+        raise ValueError('Cannot inspect the Tk runtime DLL version')
+    translations = ctypes.cast(pointer, ctypes.POINTER(wintypes.WORD))
+    pairs = [(translations[index], translations[index + 1])
+             for index in range(0, length.value // 2, 2)]
+    for language, page in pairs:
+        key = f'\\StringFileInfo\\{language:04x}{page:04x}\\FileVersion'
+        if library.VerQueryValueW(buffer, key, ctypes.byref(pointer), ctypes.byref(length)):
+            value = ctypes.wstring_at(pointer, length.value).rstrip('\x00').strip()
+            if re.fullmatch(r'\d+\.\d+\.\d+', value):
+                return value
+    raise ValueError('The Tk runtime DLL has no exact release version string')
+
+
+def runtime_component_version(component: str, base: Path) -> str:
+    import _tkinter
+    if component == 'tcl':
+        import tkinter
+        # Tcl() does not load Tk, create a window or require an interactive desktop.
+        version = str(tkinter.Tcl().call('info', 'patchlevel'))
+        family = _tkinter.TCL_VERSION
+    elif component == 'tk':
+        candidates = [path for path in (base / 'DLLs').glob('*.dll')
+                      if re.fullmatch(r'(?:tk\d+t?|tcl\d+tk\d+)\.dll', path.name, re.IGNORECASE)]
+        if len(candidates) != 1:
+            raise ValueError('Cannot identify the exact Tk runtime DLL')
+        version = windows_file_version(candidates[0])
+        family = _tkinter.TK_VERSION
+    else:
+        raise ValueError('Unknown Tcl/Tk runtime component')
+    if not re.fullmatch(r'\d+\.\d+\.\d+', version) or not version.startswith(family + '.'):
+        raise ValueError('The Tcl/Tk runtime version does not match its Python binding')
+    return version
+
+
+def fallback_tcltk_license(component: str, version: str,
+                          directory: Path = ROOT / 'tools/runtime-licenses') -> bytes:
+    catalog = json.loads((directory / 'TCLTK-PINNED.json').read_text('utf-8'))
+    if catalog.get('schema') != 1 or component not in {'tcl', 'tk'}:
+        raise ValueError('Malformed Tcl/Tk license catalog')
+    entry = catalog.get('licenses', {}).get(component, {}).get(version)
+    if (not isinstance(entry, dict) or not isinstance(entry.get('file'), str)
+            or '/' in entry['file'] or '\\' in entry['file'] or not safe_name(entry['file'])
+            or re.fullmatch(r'[a-f0-9]{64}', entry.get('sha256', '')) is None):
+        raise ValueError('No matching pinned ' + component + ' license for runtime ' + version)
+    data = plain_bytes(directory / entry['file'])
+    if sha256(data) != entry['sha256']:
+        raise ValueError('Pinned ' + component + ' license integrity check failed')
+    return data
+
+
 def runtime_licenses() -> dict[str, bytes]:
     base = Path(sys.base_prefix)
     result = {'Python-LICENSE.txt': plain_bytes(base / 'LICENSE.txt')}
+    versions = {}
     # CPython 3.15 packages Tcl/Tk 9 scripts and notices in ZIPs. Older supported
     # runtimes use unpacked Tcl/Tk 8 directories; retain the exact local notices.
     for component in ('tcl', 'tk'):
+        versions[component] = runtime_component_version(component, base)
         data = None
         for archive in sorted((base / 'tcl').glob('lib' + component + '*.zip')):
             with zipfile.ZipFile(archive) as source:
@@ -179,7 +258,10 @@ def runtime_licenses() -> dict[str, bytes]:
             if candidates:
                 data = plain_bytes(candidates[0])
         if not data:
-            raise ValueError('The Python runtime is missing its ' + component + ' license notice')
+            # Some official Windows Python installers omit Tcl/Tk license.terms.
+            # Use only an independently pinned notice for this exact component
+            # patch version; never substitute a Tcl 9 notice for a Tcl 8 runtime.
+            data = fallback_tcltk_license(component, versions[component])
         result[component.title() + '-LICENSE.txt'] = data
     installer = importlib.metadata.distribution('pyinstaller')
     copying = [path for path in installer.files or () if path.name == 'COPYING.txt']
@@ -191,13 +273,12 @@ def runtime_licenses() -> dict[str, bytes]:
     result['OpenSSL-LICENSE.txt'] = plain_bytes(openssl)
     if sha256(result['OpenSSL-LICENSE.txt']) != pinned['sha256']:
         raise ValueError('Pinned OpenSSL license notice changed')
-    import _tkinter
     import ssl
     notice = ('Standalone runtime notices\n\n'
               'CPython ' + sys.version.split()[0] + ' (Windows x64)\n'
               'Python Software Foundation and other credited contributors.\n'
               'https://www.python.org/\n\n'
-              'Tcl ' + _tkinter.TCL_VERSION + '; Tk ' + _tkinter.TK_VERSION + '\n'
+              'Tcl ' + versions['tcl'] + '; Tk ' + versions['tk'] + '\n'
               'https://www.tcl-lang.org/\n\n'
               + ssl.OPENSSL_VERSION + '\n'
               'Copyright The OpenSSL Project Authors. Apache License 2.0.\n'

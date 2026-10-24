@@ -7,8 +7,8 @@ Players do not install Python. The native x86 plugin remains the reviewed 0.8.3
 binary below; gameplay, controller, Fusion hooks and save-isolation code are
 unchanged by this installer update.
 
-- 194 Python tests passed, with three optional symlink checks skipped on this host.
-  These include the existing backend suites and 52 new installer, ownership,
+- 196 Python tests passed, with three optional symlink checks skipped on this host.
+  These include the existing backend suites and 54 new installer, ownership,
   recovery, discovery, payload and build-boundary tests.
 - Synthetic end-to-end installs prepared original-save backups before installing
   the core, copied only the owned manager, and retained originals/backups on
