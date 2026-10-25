@@ -27,7 +27,48 @@ the documented frozen-runtime inheritance motivated the correction; the old
 graphics-probe message alone does not establish the cause of a game exit.
 
 See [PyInstaller's external-program guidance](https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#launching-external-programs-from-the-frozen-application).
-The new manager's live launch acceptance is separate from the isolated child test.
+The isolated child test establishes environment handling, not a guarantee that
+Steam/Ubisoft completes each game launch. A launch retry was still needed in the
+live session below; the installer reports that a request was sent to Steam.
+
+### Live acceptance on 25 October 2026
+
+The installed 0.8.5 manager matched the exact published installer:
+`fcb128e39c29c9331cadaaba2c61817d65a3c6c29f47448960c58c01fea60cab`
+(15,074,542 bytes). The native ASI retained the 0.8.3 fingerprint below. The loaded
+Fusion Fix, loader and Xidi modules matched the supported fingerprints, and all
+ten compared configuration/controller files stayed unchanged during this session.
+
+PS5 movement, aiming, L2 hold/release and menu navigation were accepted in the
+upgrade test. In the resumed campaign check, saving a return point worked after
+letting the character settle for three seconds in unpaused gameplay before pausing.
+The saved preference to hide the free-camera hint remained off.
+
+The user confirmed sound in gameplay and after returning to the main menu. A
+20-second read-only audio trace found consistent, unmuted output through the
+intended playback device in every sample. Earlier audio had been routed to a
+different output when that device was unavailable; no global sound settings or
+game audio code were changed by the installer.
+
+The protected-save check used separate coherent snapshots after loading and after
+activation. It did not republish the practice-source marker while the game ran.
+With isolation installed, active and healthy, the game completed one redirected
+save on returning to its main menu. All five original files were still exactly
+unchanged, with no additions or removals, while the process remained open.
+
+After normal exit, all three gameplay save payloads remained unchanged. Two
+containers changed only their 32-byte ASCII-hex metadata field at offsets 8-39:
+lengths, the supported header, and all bytes from offset 40 onward were identical.
+Their two empty upload markers were removed. The third container was byte-identical.
+No original saves were restored or overwritten by the test helpers, and verified
+private backups were retained. Account directories, saved data and raw recordings
+are not published.
+
+This is one campaign acceptance session on the supported installation, not a
+certification of every arena, device or full playthrough. The published EXE is
+retained unchanged from tested source commit
+`ff3620622c14ca6abc0658339e3ce627f6a26f21`; the release's later documentation-only
+commit records the completed test and revised player instructions.
 
 ## Standalone setup 0.8.4
 

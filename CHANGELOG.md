@@ -2,6 +2,11 @@
 
 ## 0.8.5 - standalone launch correction
 
+Latest public release, 25 October 2026. Publishes the exact tested standalone EXE,
+with checksums and updated installation, audio-output and Exploration guidance.
+The live save test redirected a practice write and preserved original gameplay
+data through normal exit; only client metadata and empty upload markers changed.
+
 Some standalone launches could inherit bundled runtime search paths or
 hidden-window defaults. The manager now requests Steam with normal external
 library/PATH settings and a normal window-show command, then restores its own

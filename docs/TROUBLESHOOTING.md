@@ -28,7 +28,9 @@ prepare saves again. Never copy another person's practice source marker.
 
 ## Steam launch requested, but no game window
 
-Use setup 0.8.5 or newer and update the installed manager with the game closed.
+Use the [tested setup 0.8.5 release](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases/tag/v0.8.5)
+and update the installed manager with the game closed. Check its download hash
+using the [installation guide](INSTALLATION.md#verify-the-download).
 This version sends the request with normal external library-search and window-show
 settings. A successful request means Windows passed it to Steam; it does not
 confirm that Conviction reached its main menu.
@@ -37,6 +39,14 @@ Wait for Steam to finish starting, check its game status and avoid repeated laun
 requests while it is busy. If it still does not open, share the manager's short
 status message and the installed game/Fusion versions. Keep save/account paths
 private. Do not remove save-protection records or change DLL files to force startup.
+
+## Sound is missing or uses the wrong output
+
+Keep the speakers or headphones you intend to use connected and active before
+launching Conviction. Check the Windows Volume mixer/per-app output choice for
+the game. An HDMI monitor can be selected when the intended speakers are inactive;
+choose the intended output, then relaunch normally if necessary. Setup does not
+change global audio devices, routing or controller settings.
 
 ## Controller or mouse
 
@@ -54,10 +64,13 @@ setup. Normal PS5 installation uses Steam Input and the game's controller option
 
 ## Exploration refused
 
-Move away from obstructions, leave cover/aim/interactions, stop for three seconds
-and pause again. The public build includes floor-relative returns, so standing and
-crouching can share a point when body clearance allows it. Low ceilings, missing
-fresh input, changed floors and changed scenes still refuse unsafe movement.
+Resume gameplay and move onto clear floor away from obstructions, outside cover,
+aim and interactions. Release all controls and stay still for three seconds while
+gameplay is unpaused; only then pause with Options and reopen Exploration. Waiting
+on the pause screen does not satisfy the settling check. The public build includes
+floor-relative returns, so standing and crouching can share a point when body
+clearance allows it. Low ceilings, missing fresh input, changed floors and changed
+scenes still refuse unsafe movement.
 
 Keep the intended point; Replace return point deliberately changes the origin.
 Resume with Options if paused. A scene/checkpoint change needs a new point.

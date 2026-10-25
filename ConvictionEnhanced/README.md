@@ -3,9 +3,10 @@
 A free personal-use Windows mod by **Michael Works**, with a controller-friendly
 debug menu, camera tools, interface controls and protected solo practice.
 
-**Public preview 0.8.5.** Download
-**Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe** from this repository's
-[Releases](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases).
+**Latest public release: 0.8.5.**
+[Download the standalone installer](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases/download/v0.8.5/Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe).
+See the [release page and checksums](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases/tag/v0.8.5)
+or [step-by-step installation guide](../docs/INSTALLATION.md).
 The standalone installer and manager run on 64-bit Windows 10 or 11 without installing
 Python. The game plugin remains the tested x86 native build 0.8.3.
 
@@ -54,7 +55,7 @@ camera, check its teal landing ring, and confirm the teleport. A red marker mean
 the spot is blocked; amber means the check is pending. Look down to see the ground
 beneath the camera; an edge arrow indicates an off-screen checked spot.
 
-Release movement for three seconds before pausing for an Exploration action. Return
+Release movement for three seconds in unpaused gameplay before pausing for an Exploration action. Return
 checks the saved floor and current body clearance, so standing and crouching are
 supported. A return point belongs to the loaded scene and resets when that scene or
 the game changes. Return restores position, while enemies and objectives continue.
@@ -65,6 +66,13 @@ saving. The public launcher prepares local save protection before launch; no bac
 or account directory is included in this repository.
 
 ## Tested scope
+
+The published 0.8.5 installer is the exact artifact tested on 25 October 2026.
+PS5 controls and sound were confirmed, Fusion Fix remained loaded, and a practice
+save was redirected while all five original files stayed byte-identical. After
+normal exit, gameplay save data remained unchanged; only client metadata and empty
+upload markers changed. See [release identity](../docs/RELEASE-0.8.5.md) and
+[validation](../docs/VALIDATION.md) for scope and verification details.
 
 The underlying 0.8.2 gameplay backends were tested in solo campaign, Hunter,
 Infiltration and Last Stand on the recorded supported installation. The two latter

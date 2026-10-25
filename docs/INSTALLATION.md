@@ -1,10 +1,27 @@
 # Installation
 
-For players, download **Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe**
-from [Releases](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases).
+For players, [download the tested 0.8.5 installer](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases/download/v0.8.5/Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe)
+from the [0.8.5 release](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases/tag/v0.8.5).
+Its filename is **Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe**.
 This standalone installer and manager include their runtime: no separate Python
 installation is needed. Setup runs on 64-bit Windows 10 or 11; the game plugin is x86.
 Close Conviction before installation, updates, save preparation or removal.
+
+## Verify the download
+
+The release includes a [matching SHA-256 checksum file](https://github.com/nationstategamer/michael-works-splinter-cell-conviction-mod/releases/download/v0.8.5/Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe.sha256).
+In PowerShell, from the folder containing the downloaded EXE, run:
+
+```powershell
+Get-FileHash -LiteralPath '.\Michael-Works-Splinter-Cell-Conviction-Mod-Setup-0.8.5.exe' -Algorithm SHA256
+```
+
+The displayed hash must match this value (letter case does not matter):
+
+`fcb128e39c29c9331cadaaba2c61817d65a3c6c29f47448960c58c01fea60cab`
+
+If it differs, do not run that copy. Download the installer again from the
+official release page and compare its hash before continuing.
 
 ## Install the core tools
 
@@ -33,6 +50,10 @@ Version 0.8.5 sends the Steam request with normal external library-search settin
 and a normal window-show command, then restores the manager's own runtime
 environment. Wait for the game to open before making another launch request.
 
+Keep your intended speakers or headphones connected before launch and check
+Windows' per-app output choice if sound is routed elsewhere. Setup does not
+change Windows audio devices or routing.
+
 The manager does not create desktop/start-menu shortcuts or launch the game
 automatically after installation. Its four actions are **Check installation**,
 **Install / update**, **Launch game** and **Remove mod**.
@@ -58,6 +79,11 @@ process. Exit normally and relaunch through the manager to resume ordinary savin
 Returning to a saved position changes position; it does not rewind enemies or
 objectives. The manager retains original-save backups during removal and never
 restores a backup over newer progress automatically.
+
+Before an Exploration action, move onto clear floor outside cover in unpaused
+gameplay, leave aim/interactions and release all controls for three seconds.
+Only then pause with Options and open the debug menu. Time spent paused does
+not satisfy that movement/input settling check.
 
 ## Optional presets
 
